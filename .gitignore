@@ -5,6 +5,13 @@ streamdeck-plugin/video/node_modules/
 # Remotion previews and QA renders
 streamdeck-plugin/video/out/
 
+# Generated moderator-demo workspace and desktop assets
+streamdeck-plugin/demo/generated/
+marketplace/moderator-demo-raw.mp4
+marketplace/moderator-demo-dry-run*
+marketplace/moderator-demo-*.png
+marketplace/diagnostic-current.png
+
 # Generated plugin and package
 streamdeck-plugin/com.chromusx.contextdeck.sdPlugin/
 streamdeck-plugin/*.streamDeckPlugin
