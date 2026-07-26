@@ -1,7 +1,7 @@
 # ContextDeck
 
 <div align="center">
-  <img src="streamdeck-plugin/imgs/plugin-icon@2x.png" alt="ContextDeck" width="180">
+  <img src="logo.png" alt="ContextDeck" width="300">
 </div>
 
 <div align="center">

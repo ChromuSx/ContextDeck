@@ -3,6 +3,7 @@ const path = require('path');
 const sharp = require('sharp');
 
 const imageDir = 'imgs';
+const logoPath = path.resolve(__dirname, '..', '..', 'logo.png');
 fs.mkdirSync(imageDir, { recursive: true });
 
 const icons = {
@@ -25,9 +26,33 @@ Promise.all([
 ]).then(() => console.log('ContextDeck icons generated.'));
 
 async function renderPluginIcons() {
-  const source = logoSvg(512);
-  await sharp(Buffer.from(source)).resize(256, 256).png().toFile(path.join(imageDir, 'plugin-icon.png'));
-  await sharp(Buffer.from(source)).resize(512, 512).png().toFile(path.join(imageDir, 'plugin-icon@2x.png'));
+  if (!fs.existsSync(logoPath)) {
+    throw new Error(`Missing ContextDeck logo: ${logoPath}`);
+  }
+
+  const metadata = await sharp(logoPath).metadata();
+  if (!metadata.width || !metadata.height) {
+    throw new Error(`Cannot read ContextDeck logo dimensions: ${logoPath}`);
+  }
+
+  const cropSize = Math.floor(Math.min(metadata.width, metadata.height) * 0.684);
+  const crop = {
+    left: Math.floor((metadata.width - cropSize) / 2),
+    top: Math.floor((metadata.height - cropSize) / 2),
+    width: cropSize,
+    height: cropSize,
+  };
+
+  await renderPluginIcon(crop, 256, 'plugin-icon.png');
+  await renderPluginIcon(crop, 512, 'plugin-icon@2x.png');
+}
+
+async function renderPluginIcon(crop, size, filename) {
+  await sharp(logoPath)
+    .extract(crop)
+    .resize(size, size, { fit: 'cover', kernel: sharp.kernel.lanczos3 })
+    .png()
+    .toFile(path.join(imageDir, filename));
 }
 async function renderSmallIcon(name, size, retinaSize) {
   const source = glyphSvg(80);
@@ -39,16 +64,6 @@ async function renderKeyIcon(name, color, letter) {
   const source = keySvg(144, color, letter);
   await sharp(Buffer.from(source)).resize(72, 72).png().toFile(path.join(imageDir, `${name}.png`));
   await sharp(Buffer.from(source)).resize(144, 144).png().toFile(path.join(imageDir, `${name}@2x.png`));
-}
-
-function logoSvg(size) {
-  return `<svg xmlns="http://www.w3.org/2000/svg" width="${size}" height="${size}" viewBox="0 0 512 512">
-  <defs><linearGradient id="b" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#182638"/><stop offset="1" stop-color="#0a0f18"/></linearGradient><linearGradient id="g" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#55e3ff"/><stop offset="1" stop-color="#6577ff"/></linearGradient></defs>
-  <rect width="512" height="512" rx="112" fill="url(#b)"/>
-  <path d="M116 211v-58c0-21 17-37 37-37h58M301 116h58c21 0 37 16 37 37v58M396 301v58c0 21-16 37-37 37h-58M211 396h-58c-20 0-37-16-37-37v-58" fill="none" stroke="url(#g)" stroke-width="34" stroke-linecap="round"/>
-  <path d="M203 246h106M256 193v126" stroke="#f5fbff" stroke-width="26" stroke-linecap="round"/>
-  <circle cx="256" cy="256" r="22" fill="#55e3ff"/>
-  </svg>`;
 }
 
 function glyphSvg(size) {
