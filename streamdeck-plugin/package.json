@@ -1,0 +1,29 @@
+{
+  "name": "com.chromusx.contextdeck",
+  "version": "0.1.8",
+  "description": "Context-aware Stream Deck profiles for Windows selections",
+  "author": "ChromuSx",
+  "license": "MIT",
+  "main": "src/plugin.ts",
+  "scripts": {
+    "icons": "node scripts/generate-icons.js",
+    "profiles": "node scripts/generate-profiles.js",
+    "build:helper": "dotnet publish native/ContextDeck.Helper/ContextDeck.Helper.csproj -c Release -r win-x64 --self-contained true",
+    "build:ts": "node node_modules/typescript/bin/tsc",
+    "build": "npm run icons && npm run profiles && npm run build:helper && npm run build:ts && node scripts/copy-assets.js",
+    "test": "npm run build:ts && node scripts/run-tests.js",
+    "validate": "node scripts/validate-plugin.js",
+    "package": "node scripts/package-plugin.js",
+    "build:package": "npm run build && npm run package"
+  },
+  "dependencies": {
+    "ws": "^8.18.3"
+  },
+  "devDependencies": {
+    "@types/node": "^20.17.0",
+    "@types/ws": "^8.18.1",
+    "adm-zip": "^0.6.0",
+    "sharp": "^0.35.3",
+    "typescript": "^5.7.3"
+  }
+}

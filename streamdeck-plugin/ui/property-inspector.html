@@ -1,0 +1,402 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>ContextDeck Settings</title>
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      padding: 20px;
+      color: #d8d8d8;
+      background-color: #2d2d2d;
+      font: 13px/1.4 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+    }
+
+    .sdpi-wrapper {
+      max-width: 100%;
+    }
+
+    .sdpi-item {
+      margin-bottom: 16px;
+    }
+
+    .sdpi-item-label {
+      display: block;
+      margin-bottom: 6px;
+      color: #9d9d9d;
+      font-size: 11px;
+      font-weight: 500;
+      letter-spacing: .5px;
+      text-transform: uppercase;
+    }
+
+    .section-title {
+      margin: 20px 0 12px;
+      padding-bottom: 6px;
+      color: #0e6dbb;
+      border-bottom: 1px solid #515151;
+      font-size: 12px;
+      font-weight: 600;
+    }
+
+    select,
+    input[type="number"],
+    textarea {
+      width: 100%;
+      padding: 8px 10px;
+      color: #d8d8d8;
+      background-color: #3a3a3a;
+      border: 1px solid #515151;
+      border-radius: 4px;
+      font: inherit;
+    }
+
+    select:focus,
+    input:focus,
+    textarea:focus {
+      outline: none;
+      background-color: #404040;
+      border-color: #0e6dbb;
+    }
+
+    textarea {
+      min-height: 72px;
+      resize: vertical;
+      font-family: Consolas, Monaco, "Courier New", monospace;
+    }
+
+    .checkbox-wrapper {
+      display: flex;
+      align-items: center;
+      padding: 7px 0;
+    }
+
+    .checkbox-wrapper input {
+      margin: 0 8px 0 0;
+    }
+
+    .checkbox-wrapper label {
+      cursor: pointer;
+      user-select: none;
+    }
+
+    .info-text {
+      margin-top: 4px;
+      color: #7a7a7a;
+      font-size: 11px;
+      font-style: italic;
+    }
+
+    .status-line {
+      padding: 8px 10px;
+      color: #bcbcbc;
+      background: #353535;
+      border: 1px solid #4a4a4a;
+      border-radius: 4px;
+      font-size: 11px;
+      line-height: 1.45;
+    }
+
+    .device-row {
+      display: flex;
+      align-items: flex-start;
+      padding: 7px 0;
+    }
+
+    .device-row input {
+      margin: 2px 8px 0 0;
+    }
+
+    .device-copy {
+      min-width: 0;
+    }
+
+    .device-copy strong {
+      display: block;
+      font-weight: 400;
+    }
+
+    .device-copy small {
+      color: #7a7a7a;
+    }
+
+    .unsupported {
+      color: #df7777 !important;
+    }
+  </style>
+</head>
+<body>
+  <div class="sdpi-wrapper">
+    <div id="status" class="status-line">Connecting to ContextDeck…</div>
+
+    <div class="section-title">Automatic Switching</div>
+    <div class="sdpi-item">
+      <div class="checkbox-wrapper">
+        <input id="enabled" type="checkbox">
+        <label for="enabled">Enable automatic profile switching</label>
+      </div>
+      <div class="info-text">The ContextDeck key can also pause or resume switching.</div>
+    </div>
+
+    <div class="section-title">Contexts</div>
+    <div class="sdpi-item">
+      <div class="checkbox-wrapper">
+        <input id="enableText" type="checkbox">
+        <label for="enableText">Selected text</label>
+      </div>
+      <div class="checkbox-wrapper">
+        <input id="enableFiles" type="checkbox">
+        <label for="enableFiles">Files</label>
+      </div>
+      <div class="checkbox-wrapper">
+        <input id="enableFolders" type="checkbox">
+        <label for="enableFolders">Folders</label>
+      </div>
+      <div class="checkbox-wrapper">
+        <input id="enableImages" type="checkbox">
+        <label for="enableImages">Image files</label>
+      </div>
+    </div>
+
+    <div class="sdpi-item">
+      <label class="sdpi-item-label" for="imageFileMode">Image files use</label>
+      <select id="imageFileMode">
+        <option value="image">Image profile</option>
+        <option value="file">File profile</option>
+      </select>
+      <div class="info-text">Applies to image files selected in File Explorer.</div>
+    </div>
+
+    <div class="section-title">Timing</div>
+    <div class="sdpi-item">
+      <label class="sdpi-item-label" for="debounceMs">Switch delay (milliseconds)</label>
+      <input id="debounceMs" type="number" min="100" max="2000" step="50">
+    </div>
+    <div class="sdpi-item">
+      <label class="sdpi-item-label" for="returnDelayMs">Return delay (milliseconds)</label>
+      <input id="returnDelayMs" type="number" min="100" max="3000" step="50">
+    </div>
+    <div class="sdpi-item">
+      <label class="sdpi-item-label" for="helperPollMs">Detection interval (milliseconds)</label>
+      <input id="helperPollMs" type="number" min="250" max="2000" step="50">
+    </div>
+
+    <div class="section-title">Target Devices</div>
+    <div id="devices" class="sdpi-item">
+      <div class="info-text">Waiting for connected devices…</div>
+    </div>
+    <div class="info-text">When every supported device is checked, future devices are included automatically.</div>
+
+    <div class="section-title">Application Exclusions</div>
+    <div class="sdpi-item">
+      <label class="sdpi-item-label" for="excludedProcesses">Executable names, one per line</label>
+      <textarea id="excludedProcesses" spellcheck="false" placeholder="streamdeck&#10;my-editor"></textarea>
+    </div>
+
+    <div class="section-title">Information</div>
+    <div class="info-text">
+      ContextDeck receives only the selection category and foreground process name.
+      Selected text, paths, and file contents remain on the computer.
+      Settings are saved automatically.
+    </div>
+  </div>
+
+  <script>
+    let websocket = null;
+    let actionUUID = '';
+    let contextUUID = '';
+    let currentDevices = [];
+    let currentSettings = {};
+    let saveTimer = null;
+    let rendering = false;
+
+    window.connectElgatoStreamDeckSocket = function(port, uuid, registerEvent, info, actionInfo) {
+      actionUUID = JSON.parse(actionInfo).action;
+      contextUUID = uuid;
+      websocket = new WebSocket(`ws://127.0.0.1:${port}`);
+
+      websocket.onopen = function() {
+        websocket.send(JSON.stringify({ event: registerEvent, uuid }));
+        sendToPlugin({ type: 'getStatus' });
+      };
+
+      websocket.onmessage = function(event) {
+        const message = JSON.parse(event.data);
+        if (
+          message.event === 'sendToPropertyInspector' &&
+          message.payload?.type === 'status'
+        ) {
+          renderStatus(message.payload);
+        }
+      };
+
+      websocket.onclose = function() {
+        document.getElementById('status').textContent = 'ContextDeck disconnected';
+      };
+    };
+
+    document.addEventListener('DOMContentLoaded', function() {
+      for (const id of [
+        'enabled',
+        'enableText',
+        'enableFiles',
+        'enableFolders',
+        'enableImages',
+        'imageFileMode',
+      ]) {
+        document.getElementById(id).addEventListener('change', scheduleSave);
+      }
+
+      for (const id of [
+        'debounceMs',
+        'returnDelayMs',
+        'helperPollMs',
+        'excludedProcesses',
+      ]) {
+        document.getElementById(id).addEventListener('input', scheduleSave);
+      }
+
+      document.getElementById('devices').addEventListener('change', scheduleSave);
+    });
+
+    function renderStatus(status) {
+      currentSettings = status.settings || {};
+      rendering = true;
+
+      for (const id of [
+        'enabled',
+        'enableText',
+        'enableFiles',
+        'enableFolders',
+        'enableImages',
+      ]) {
+        document.getElementById(id).checked = Boolean(currentSettings[id]);
+      }
+
+      for (const id of ['debounceMs', 'returnDelayMs', 'helperPollMs']) {
+        document.getElementById(id).value = currentSettings[id];
+      }
+
+      document.getElementById('imageFileMode').value =
+        currentSettings.imageFileMode || 'image';
+      document.getElementById('excludedProcesses').value =
+        (currentSettings.excludedProcesses || []).join('\n');
+
+      currentDevices = status.devices || [];
+      renderDevices(currentDevices, currentSettings.targetDeviceIds || []);
+
+      const active = status.activeKind
+        ? `${capitalize(status.activeKind)} profile active`
+        : 'Ready';
+      const detected = formatKind(status.observation?.kind || 'none');
+      const process = status.observation?.process || 'no foreground application';
+      document.getElementById('status').textContent =
+        `${currentSettings.enabled ? active : 'Paused'} · Detected: ${detected} · ${process}`;
+
+      rendering = false;
+    }
+
+    function renderDevices(devices, selectedIds) {
+      const container = document.getElementById('devices');
+      if (!devices.length) {
+        container.innerHTML = '<div class="info-text">No connected devices reported.</div>';
+        return;
+      }
+
+      const allSelected = selectedIds.length === 0;
+      container.innerHTML = devices.map(device => `
+        <label class="device-row">
+          <input
+            type="checkbox"
+            data-device-id="${escapeHtml(device.id)}"
+            ${(allSelected || selectedIds.includes(device.id)) ? 'checked' : ''}
+            ${device.supported ? '' : 'disabled'}
+          >
+          <span class="device-copy">
+            <strong>${escapeHtml(device.name)}</strong>
+            <small class="${device.supported ? '' : 'unsupported'}">
+              ${device.supported ? `Device type ${device.type}` : `Unsupported device type ${device.type}`}
+            </small>
+          </span>
+        </label>
+      `).join('');
+    }
+
+    function scheduleSave() {
+      if (rendering) return;
+      if (saveTimer) clearTimeout(saveTimer);
+      saveTimer = setTimeout(saveSettings, 300);
+    }
+
+    function saveSettings() {
+      currentSettings = collectSettings();
+      sendToPlugin({ type: 'saveSettings', settings: currentSettings });
+    }
+
+    function collectSettings() {
+      const supportedDevices = currentDevices.filter(device => device.supported);
+      const selectedIds = [
+        ...document.querySelectorAll('[data-device-id]:checked'),
+      ].map(input => input.dataset.deviceId);
+
+      return {
+        enabled: document.getElementById('enabled').checked,
+        enableText: document.getElementById('enableText').checked,
+        enableFiles: document.getElementById('enableFiles').checked,
+        enableFolders: document.getElementById('enableFolders').checked,
+        enableImages: document.getElementById('enableImages').checked,
+        imageFileMode: document.getElementById('imageFileMode').value,
+        debounceMs: Number(document.getElementById('debounceMs').value),
+        returnDelayMs: Number(document.getElementById('returnDelayMs').value),
+        helperPollMs: Number(document.getElementById('helperPollMs').value),
+        excludedProcesses: document
+          .getElementById('excludedProcesses')
+          .value
+          .split(/\r?\n/)
+          .map(value => value.trim())
+          .filter(Boolean),
+        targetDeviceIds:
+          selectedIds.length === supportedDevices.length ? [] : selectedIds,
+      };
+    }
+
+    function sendToPlugin(payload) {
+      if (!websocket || websocket.readyState !== WebSocket.OPEN) return;
+      websocket.send(JSON.stringify({
+        action: actionUUID,
+        event: 'sendToPlugin',
+        context: contextUUID,
+        payload,
+      }));
+    }
+
+    function formatKind(value) {
+      if (value === 'none') return 'No selection';
+      if (value === 'image-file') return 'Image file';
+      return capitalize(value);
+    }
+
+    function capitalize(value) {
+      return value.charAt(0).toUpperCase() + value.slice(1);
+    }
+
+    function escapeHtml(value) {
+      return String(value).replace(
+        /[&<>"']/g,
+        char => ({
+          '&': '&amp;',
+          '<': '&lt;',
+          '>': '&gt;',
+          '"': '&quot;',
+          "'": '&#39;',
+        })[char]
+      );
+    }
+  </script>
+</body>
+</html>

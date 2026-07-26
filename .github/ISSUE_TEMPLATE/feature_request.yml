@@ -1,0 +1,38 @@
+name: Feature request
+description: Suggest an improvement for ContextDeck
+title: "[Feature]: "
+labels:
+  - enhancement
+body:
+  - type: textarea
+    id: problem
+    attributes:
+      label: Problem or use case
+      description: What selection workflow would this improve?
+    validations:
+      required: true
+  - type: textarea
+    id: proposal
+    attributes:
+      label: Proposed behavior
+    validations:
+      required: true
+  - type: dropdown
+    id: context
+    attributes:
+      label: Selection context
+      options:
+        - Text
+        - File
+        - Folder
+        - Image file
+        - Device support
+        - Settings
+        - Other
+    validations:
+      required: true
+  - type: textarea
+    id: privacy
+    attributes:
+      label: Privacy considerations
+      description: Could the feature expose selected content or paths?

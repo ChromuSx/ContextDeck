@@ -1,0 +1,101 @@
+{
+  "$schema": "https://schemas.elgato.com/streamdeck/plugins/manifest.json",
+  "Name": "ContextDeck",
+  "Version": "0.1.8.0",
+  "Author": "ChromuSx",
+  "Description": "Automatically show editable Stream Deck profiles for selected text, files, folders, and images.",
+  "URL": "https://github.com/ChromuSx/ContextDeck",
+  "SupportURL": "https://github.com/ChromuSx/ContextDeck/issues",
+  "Icon": "imgs/plugin-icon",
+  "CodePath": "bin/plugin.js",
+  "PropertyInspectorPath": "ui/property-inspector.html",
+  "SDKVersion": 2,
+  "Nodejs": {
+    "Version": "20"
+  },
+  "OS": [
+    {
+      "Platform": "windows",
+      "MinimumVersion": "10"
+    }
+  ],
+  "Software": {
+    "MinimumVersion": "6.9"
+  },
+  "UUID": "com.chromusx.contextdeck",
+  "Category": "ContextDeck",
+  "CategoryIcon": "imgs/category-icon",
+  "Actions": [
+    {
+      "Name": "ContextDeck Control",
+      "UUID": "com.chromusx.contextdeck.control",
+      "Icon": "imgs/action-icon",
+      "Tooltip": "Pause ContextDeck and configure automatic context profiles",
+      "States": [
+        {
+          "Image": "imgs/key-active",
+          "Name": "Active"
+        },
+        {
+          "Image": "imgs/key-paused",
+          "Name": "Paused"
+        },
+        {
+          "Image": "imgs/key-text",
+          "Name": "Text"
+        },
+        {
+          "Image": "imgs/key-file",
+          "Name": "File"
+        },
+        {
+          "Image": "imgs/key-folder",
+          "Name": "Folder"
+        },
+        {
+          "Image": "imgs/key-image",
+          "Name": "Image"
+        },
+        {
+          "Image": "imgs/key-error",
+          "Name": "Error"
+        }
+      ],
+      "DisableAutomaticStates": true,
+      "PropertyInspectorPath": "ui/property-inspector.html",
+      "SupportedInMultiActions": false,
+      "UserTitleEnabled": false
+    }
+  ],
+  "Profiles": [
+    { "Name": "profiles/text-sd", "DeviceType": 0, "Readonly": false, "DontAutoSwitchWhenInstalled": true, "AutoInstall": true },
+    { "Name": "profiles/file-sd", "DeviceType": 0, "Readonly": false, "DontAutoSwitchWhenInstalled": true, "AutoInstall": true },
+    { "Name": "profiles/folder-sd", "DeviceType": 0, "Readonly": false, "DontAutoSwitchWhenInstalled": true, "AutoInstall": true },
+    { "Name": "profiles/image-sd", "DeviceType": 0, "Readonly": false, "DontAutoSwitchWhenInstalled": true, "AutoInstall": true },
+
+    { "Name": "profiles/text-sd-mini", "DeviceType": 1, "Readonly": false, "DontAutoSwitchWhenInstalled": true, "AutoInstall": true },
+    { "Name": "profiles/file-sd-mini", "DeviceType": 1, "Readonly": false, "DontAutoSwitchWhenInstalled": true, "AutoInstall": true },
+    { "Name": "profiles/folder-sd-mini", "DeviceType": 1, "Readonly": false, "DontAutoSwitchWhenInstalled": true, "AutoInstall": true },
+    { "Name": "profiles/image-sd-mini", "DeviceType": 1, "Readonly": false, "DontAutoSwitchWhenInstalled": true, "AutoInstall": true },
+
+    { "Name": "profiles/text-sdxl", "DeviceType": 2, "Readonly": false, "DontAutoSwitchWhenInstalled": true, "AutoInstall": true },
+    { "Name": "profiles/file-sdxl", "DeviceType": 2, "Readonly": false, "DontAutoSwitchWhenInstalled": true, "AutoInstall": true },
+    { "Name": "profiles/folder-sdxl", "DeviceType": 2, "Readonly": false, "DontAutoSwitchWhenInstalled": true, "AutoInstall": true },
+    { "Name": "profiles/image-sdxl", "DeviceType": 2, "Readonly": false, "DontAutoSwitchWhenInstalled": true, "AutoInstall": true },
+
+    { "Name": "profiles/text-sd-mobile", "DeviceType": 3, "Readonly": false, "DontAutoSwitchWhenInstalled": true, "AutoInstall": true },
+    { "Name": "profiles/file-sd-mobile", "DeviceType": 3, "Readonly": false, "DontAutoSwitchWhenInstalled": true, "AutoInstall": true },
+    { "Name": "profiles/folder-sd-mobile", "DeviceType": 3, "Readonly": false, "DontAutoSwitchWhenInstalled": true, "AutoInstall": true },
+    { "Name": "profiles/image-sd-mobile", "DeviceType": 3, "Readonly": false, "DontAutoSwitchWhenInstalled": true, "AutoInstall": true },
+
+    { "Name": "profiles/text-sdp", "DeviceType": 7, "Readonly": false, "DontAutoSwitchWhenInstalled": true, "AutoInstall": true },
+    { "Name": "profiles/file-sdp", "DeviceType": 7, "Readonly": false, "DontAutoSwitchWhenInstalled": true, "AutoInstall": true },
+    { "Name": "profiles/folder-sdp", "DeviceType": 7, "Readonly": false, "DontAutoSwitchWhenInstalled": true, "AutoInstall": true },
+    { "Name": "profiles/image-sdp", "DeviceType": 7, "Readonly": false, "DontAutoSwitchWhenInstalled": true, "AutoInstall": true },
+
+    { "Name": "profiles/text-sd-neo", "DeviceType": 9, "Readonly": false, "DontAutoSwitchWhenInstalled": true, "AutoInstall": true },
+    { "Name": "profiles/file-sd-neo", "DeviceType": 9, "Readonly": false, "DontAutoSwitchWhenInstalled": true, "AutoInstall": true },
+    { "Name": "profiles/folder-sd-neo", "DeviceType": 9, "Readonly": false, "DontAutoSwitchWhenInstalled": true, "AutoInstall": true },
+    { "Name": "profiles/image-sd-neo", "DeviceType": 9, "Readonly": false, "DontAutoSwitchWhenInstalled": true, "AutoInstall": true }
+  ]
+}

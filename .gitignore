@@ -1,0 +1,25 @@
+# Dependencies
+streamdeck-plugin/node_modules/
+
+# Generated plugin and package
+streamdeck-plugin/com.chromusx.contextdeck.sdPlugin/
+streamdeck-plugin/*.streamDeckPlugin
+streamdeck-plugin/profiles/generated/
+
+# .NET build output
+**/bin/
+**/obj/
+
+# Logs and local tooling
+*.log
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+*.user
+*.suo
+
+# Local environment files
+.env
+.env.*
+!.env.example
