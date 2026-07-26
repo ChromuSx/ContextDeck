@@ -2,6 +2,15 @@
 
 All notable changes to ContextDeck are documented in this file.
 
+## [0.1.11] - 2026-07-26
+
+### Changed
+
+- Raised the manifest SDK compatibility to version 3 for Marketplace DRM.
+- Switched distribution packaging and validation to the official Stream Deck
+  CLI 1.7.4.
+- Kept the minimum Stream Deck software version at 6.9, as required for DRM.
+
 ## [0.1.10] - 2026-07-26
 
 ### Changed

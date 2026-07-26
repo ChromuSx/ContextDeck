@@ -11,6 +11,12 @@ if (!fs.existsSync(manifestPath)) {
 } else {
   const manifest = JSON.parse(fs.readFileSync(manifestPath, 'utf8'));
   if (manifest.UUID !== 'com.chromusx.contextdeck') errors.push('Unexpected plugin UUID.');
+  if (manifest.SDKVersion !== 3) {
+    errors.push('Marketplace builds require manifest SDKVersion 3 for DRM.');
+  }
+  if (Number.parseFloat(manifest.Software?.MinimumVersion || '0') < 6.9) {
+    errors.push('DRM requires Stream Deck Software.MinimumVersion 6.9 or newer.');
+  }
   if (manifest.Actions?.[0]?.UUID !== 'com.chromusx.contextdeck.control') {
     errors.push('ContextDeck control action is missing.');
   }

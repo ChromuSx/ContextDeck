@@ -1,6 +1,6 @@
 {
   "name": "com.chromusx.contextdeck",
-  "version": "0.1.10",
+  "version": "0.1.11",
   "description": "Context-aware Stream Deck profiles for Windows selections",
   "author": "ChromuSx",
   "license": "MIT",
@@ -12,14 +12,15 @@
     "build:ts": "node node_modules/typescript/bin/tsc",
     "build": "npm run icons && npm run profiles && npm run build:helper && npm run build:ts && node scripts/copy-assets.js",
     "test": "npm run build:ts && node scripts/run-tests.js",
-    "validate": "node scripts/validate-plugin.js",
-    "package": "node scripts/package-plugin.js",
+    "validate": "node scripts/validate-plugin.js && streamdeck validate com.chromusx.contextdeck.sdPlugin --no-update-check",
+    "package": "streamdeck pack com.chromusx.contextdeck.sdPlugin --force --no-update-check",
     "build:package": "npm run build && npm run package"
   },
   "dependencies": {
     "ws": "^8.18.3"
   },
   "devDependencies": {
+    "@elgato/cli": "1.7.4",
     "@types/node": "^20.17.0",
     "@types/ws": "^8.18.1",
     "adm-zip": "^0.6.0",
