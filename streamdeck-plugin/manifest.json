@@ -1,7 +1,7 @@
 {
   "$schema": "https://schemas.elgato.com/streamdeck/plugins/manifest.json",
   "Name": "ContextDeck",
-  "Version": "0.1.8.0",
+  "Version": "0.1.9.0",
   "Author": "ChromuSx",
   "Description": "Automatically show editable Stream Deck profiles for selected text, files, folders, and images.",
   "URL": "https://github.com/ChromuSx/ContextDeck",

@@ -2,6 +2,18 @@
 
 All notable changes to ContextDeck are documented in this file.
 
+## [0.1.9] - 2026-07-26
+
+### Changed
+
+- Applied the official ContextDeck artwork to the plugin icon shown in Stream Deck preferences.
+- Replaced the generic action-list glyph with a monochrome ContextDeck logo variant.
+- Corrected the category icon sizes to the official 28 px and 56 px dimensions.
+
+### Fixed
+
+- Bumped the plugin version so Stream Deck refreshes cached plugin artwork after reinstalling.
+
 ## [0.1.8] - 2026-07-26
 
 ### Added

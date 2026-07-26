@@ -18,8 +18,8 @@ const icons = {
 
 Promise.all([
   renderPluginIcons(),
-  renderSmallIcon('category-icon', 20, 40),
-  renderSmallIcon('action-icon', 20, 40),
+  renderActionListIcon('category-icon', 28, 56),
+  renderActionListIcon('action-icon', 20, 40),
   ...Object.entries(icons).map(([name, definition]) =>
     renderKeyIcon(name, definition[0], definition[1])
   ),
@@ -54,8 +54,8 @@ async function renderPluginIcon(crop, size, filename) {
     .png()
     .toFile(path.join(imageDir, filename));
 }
-async function renderSmallIcon(name, size, retinaSize) {
-  const source = glyphSvg(80);
+async function renderActionListIcon(name, size, retinaSize) {
+  const source = actionListLogoSvg(80);
   await sharp(Buffer.from(source)).resize(size, size).png().toFile(path.join(imageDir, `${name}.png`));
   await sharp(Buffer.from(source)).resize(retinaSize, retinaSize).png().toFile(path.join(imageDir, `${name}@2x.png`));
 }
@@ -66,8 +66,8 @@ async function renderKeyIcon(name, color, letter) {
   await sharp(Buffer.from(source)).resize(144, 144).png().toFile(path.join(imageDir, `${name}@2x.png`));
 }
 
-function glyphSvg(size) {
-  return `<svg xmlns="http://www.w3.org/2000/svg" width="${size}" height="${size}" viewBox="0 0 80 80"><path d="M12 32V18c0-4 3-6 6-6h14M48 12h14c3 0 6 2 6 6v14M68 48v14c0 4-3 6-6 6H48M32 68H18c-3 0-6-2-6-6V48" fill="none" stroke="#fff" stroke-width="8" stroke-linecap="round"/><circle cx="40" cy="40" r="8" fill="#fff"/></svg>`;
+function actionListLogoSvg(size) {
+  return `<svg xmlns="http://www.w3.org/2000/svg" width="${size}" height="${size}" viewBox="0 0 80 80"><g fill="none" stroke="#fff" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><path d="M36 12h24a9 9 0 0 1 9 9v35a9 9 0 0 1-9 9H36"/><path d="M23 20h27a9 9 0 0 1 9 9v34a9 9 0 0 1-9 9H23"/><path d="M10 30h30a9 9 0 0 1 9 9v31H19a9 9 0 0 1-9-9z"/></g><path d="M7 63c14-14 29-20 45-18 10 1 16-4 21-15" fill="none" stroke="#fff" stroke-width="6" stroke-linecap="round"/></svg>`;
 }
 
 function keySvg(size, color, letter) {
