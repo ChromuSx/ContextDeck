@@ -1,0 +1,33 @@
+{
+  "name": "contextdeck-video",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Marketplace promo video for the ContextDeck Stream Deck plugin",
+  "scripts": {
+    "studio": "remotion studio",
+    "typecheck": "tsc --noEmit",
+    "render": "remotion render ContextDeckPromo ../../marketplace/promo.mp4 --codec=h264 --crf=22 --pixel-format=yuv420p",
+    "render:preview": "remotion render ContextDeckPromo out/preview.mp4 --codec=h264 --crf=28 --scale=0.5 --pixel-format=yuv420p",
+    "frame:hero": "remotion still ContextDeckPromo out/frame-hero.png --frame=180",
+    "frame:text": "remotion still ContextDeckPromo out/frame-text.png --frame=540",
+    "frame:contexts": "remotion still ContextDeckPromo out/frame-contexts.png --frame=1020",
+    "frame:settings": "remotion still ContextDeckPromo out/frame-settings.png --frame=1450",
+    "frame:privacy": "remotion still ContextDeckPromo out/frame-privacy.png --frame=1750",
+    "frame:closing": "remotion still ContextDeckPromo out/frame-closing.png --frame=1980",
+    "frames": "npm run frame:hero && npm run frame:text && npm run frame:contexts && npm run frame:settings && npm run frame:privacy && npm run frame:closing"
+  },
+  "dependencies": {
+    "@remotion/cli": "4.0.499",
+    "@remotion/media": "4.0.499",
+    "@remotion/transitions": "4.0.499",
+    "react": "19.2.8",
+    "react-dom": "19.2.8",
+    "remotion": "4.0.499"
+  },
+  "devDependencies": {
+    "@remotion/studio": "4.0.499",
+    "@types/react": "19.2.17",
+    "@types/react-dom": "19.2.3",
+    "typescript": "6.0.3"
+  }
+}

@@ -1,5 +1,9 @@
 # Dependencies
 streamdeck-plugin/node_modules/
+streamdeck-plugin/video/node_modules/
+
+# Remotion previews and QA renders
+streamdeck-plugin/video/out/
 
 # Generated plugin and package
 streamdeck-plugin/com.chromusx.contextdeck.sdPlugin/
