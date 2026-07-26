@@ -73,7 +73,7 @@ function connectElgatoStreamDeckSocket(
 
     handleMessage(message).catch((error) => {
       logMessage(`Message error: ${toErrorMessage(error)}`);
-      setControlState(6, 'Error');
+      setControlState(6);
     });
   });
 
@@ -213,7 +213,7 @@ function startHelper() {
 
   child.on('error', (error) => {
     logMessage(`Selection helper failed: ${toErrorMessage(error)}`);
-    setControlState(6, 'Helper\nerror');
+    setControlState(6);
   });
 
   child.on('exit', (code) => {
@@ -272,7 +272,7 @@ function scheduleObservation(observation: SelectionObservation, immediate = fals
       .then(() => transitionAllDevices(scheduledKind))
       .catch((error) => {
         logMessage(`Profile transition failed: ${toErrorMessage(error)}`);
-        setControlState(6, 'Switch\nerror');
+        setControlState(6);
       });
   }, delayMs);
 }
@@ -419,37 +419,33 @@ function updateControlActions() {
 function updateControlAction(context: string) {
   if (!settings.enabled) {
     setState(context, 1);
-    setTitle(context, 'Paused');
+    setTitle(context, '');
     return;
   }
 
   const active = firstActiveKind();
   if (active === 'text') {
     setState(context, 2);
-    setTitle(context, 'Text');
   } else if (active === 'file') {
     setState(context, 3);
-    setTitle(context, 'File');
   } else if (active === 'folder') {
     setState(context, 4);
-    setTitle(context, 'Folder');
   } else if (active === 'image') {
     setState(context, 5);
-    setTitle(context, 'Image');
   } else {
     setState(context, 0);
-    setTitle(context, 'Context\nready');
   }
+  setTitle(context, '');
 }
 
 function firstActiveKind(): ProfileKind | undefined {
   return activeKinds.values().next().value;
 }
 
-function setControlState(state: number, title: string) {
+function setControlState(state: number) {
   for (const context of controlContexts) {
     setState(context, state);
-    setTitle(context, title);
+    setTitle(context, '');
   }
 }
 

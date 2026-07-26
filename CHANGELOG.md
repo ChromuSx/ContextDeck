@@ -2,6 +2,14 @@
 
 All notable changes to ContextDeck are documented in this file.
 
+## [0.1.10] - 2026-07-26
+
+### Changed
+
+- Replaced every ContextDeck Control key-state image with the official logo.
+- Added compact status badges for pause, detected context, and errors.
+- Removed runtime key titles so status text no longer obscures the logo.
+
 ## [0.1.9] - 2026-07-26
 
 ### Changed
