@@ -27,6 +27,12 @@ if (!fs.existsSync(manifestPath)) {
     const profilePath = path.join(pluginDir, `${profile.Name}.streamDeckProfile`);
     if (!fs.existsSync(profilePath)) errors.push(`Missing profile: ${profilePath}`);
     if (profile.Readonly !== false) errors.push(`Profile must be editable: ${profile.Name}`);
+    if (profile.AutoInstall !== true) {
+      errors.push(`Profile must use the single install-time prompt: ${profile.Name}`);
+    }
+    if (profile.DontAutoSwitchWhenInstalled !== true) {
+      errors.push(`Profile must not auto-switch during installation: ${profile.Name}`);
+    }
     if (fs.existsSync(profilePath)) validateProfile(profilePath, profile.Name);
   }
 }

@@ -19,7 +19,6 @@ import {
 
 const pluginUUID = 'com.chromusx.contextdeck';
 const controlActionUUID = `${pluginUUID}.control`;
-const profileWarmupRetryDelaysMs = [2500, 5000];
 
 let ws: WebSocketLib.WebSocket;
 let pluginApiContext = '';
@@ -30,8 +29,6 @@ let helperRestartTimer: NodeJS.Timeout | undefined;
 let observationTimer: NodeJS.Timeout | undefined;
 let helperBuffer = '';
 let shuttingDown = false;
-let repairingProfiles = false;
-let profileRepairStarted = false;
 let currentObservation: SelectionObservation = emptyObservation();
 let pendingObservation: SelectionObservation = currentObservation;
 let transitionQueue: Promise<void> = Promise.resolve();
@@ -39,7 +36,6 @@ let transitionQueue: Promise<void> = Promise.resolve();
 const devices = new Map<string, StreamDeckDevice>();
 const controlContexts = new Set<string>();
 const activeKinds = new Map<string, ProfileKind>();
-const warmedProfileSwitches = new Set<string>();
 
 function connectElgatoStreamDeckSocket(
   inPort: string,
@@ -94,9 +90,7 @@ async function handleMessage(message: any) {
       if (previousPollMs !== settings.helperPollMs && helper) {
         restartHelper();
       }
-      if (startProfileRepairIfNeeded()) {
-        // The repair restores the current context when it finishes.
-      } else if (!settings.enabled) {
+      if (!settings.enabled) {
         scheduleObservation(emptyObservation(), true);
       } else {
         scheduleObservation(currentObservation, true);
@@ -143,7 +137,10 @@ async function handleMessage(message: any) {
           type: deviceInfo.type,
           size: deviceInfo.size,
         });
-        startProfileRepairIfNeeded();
+        scheduleObservation(
+          settings.enabled ? currentObservation : emptyObservation(),
+          true
+        );
         sendStatusToAllInspectors();
       }
       break;
@@ -163,10 +160,7 @@ async function handlePropertyInspectorMessage(context: string, payload: any) {
   }
 
   if (payload?.type === 'saveSettings') {
-    await saveSettings({
-      ...normalizeSettings(payload.settings),
-      profileRepairVersion: settings.profileRepairVersion,
-    });
+    await saveSettings(normalizeSettings(payload.settings));
   }
 }
 
@@ -255,7 +249,6 @@ function handleHelperLine(line: string) {
 
 function scheduleObservation(observation: SelectionObservation, immediate = false) {
   pendingObservation = observation;
-  if (repairingProfiles) return;
   if (observationTimer) clearTimeout(observationTimer);
 
   const kind = resolveProfileKind(observation, settings);
@@ -275,60 +268,6 @@ function scheduleObservation(observation: SelectionObservation, immediate = fals
         setControlState(6);
       });
   }, delayMs);
-}
-
-function startProfileRepairIfNeeded(): boolean {
-  if (
-    settings.profileRepairVersion >= 1 ||
-    repairingProfiles ||
-    profileRepairStarted
-  ) {
-    return repairingProfiles;
-  }
-
-  const targets = [...devices.values()].filter(isTargetDevice);
-  if (targets.length === 0) return false;
-
-  profileRepairStarted = true;
-  repairingProfiles = true;
-  repairBundledProfiles(targets).catch((error) => {
-    logMessage(`Bundled profile repair failed: ${toErrorMessage(error)}`);
-    profileRepairStarted = false;
-    repairingProfiles = false;
-    scheduleObservation(currentObservation, true);
-  });
-  return true;
-}
-
-async function repairBundledProfiles(targets: StreamDeckDevice[]) {
-  const kinds: ProfileKind[] = ['text', 'file', 'folder', 'image'];
-  logMessage(`Repairing bundled profiles on ${targets.length} device(s)`);
-
-  for (const device of targets) {
-    for (const kind of kinds) {
-      if (shuttingDown) return;
-      const profile = profileName(kind, device.type);
-      if (!profile) continue;
-
-      switchToProfile(device.id, profile);
-      await delay(2500);
-      switchToProfile(device.id, profile);
-      await delay(500);
-    }
-    switchToProfile(device.id);
-  }
-
-  activeKinds.clear();
-  settings = { ...settings, profileRepairVersion: 1 };
-  sendEvent('setGlobalSettings', pluginApiContext, settings);
-  repairingProfiles = false;
-  logMessage('Bundled profile repair completed');
-  scheduleObservation(
-    settings.enabled ? currentObservation : emptyObservation(),
-    true
-  );
-  updateControlActions();
-  sendStatusToAllInspectors();
 }
 
 async function transitionAllDevices(nextKind: ProfileKind | undefined) {
@@ -363,33 +302,7 @@ async function transitionDevice(
 
   switchToProfile(device.id, targetProfile);
   activeKinds.set(device.id, nextKind);
-  scheduleProfileWarmupRetries(device.id, nextKind, targetProfile);
   logMessage(`Switched ${device.name} to ${nextKind} context`);
-}
-
-function scheduleProfileWarmupRetries(
-  deviceId: string,
-  kind: ProfileKind,
-  profile: string
-) {
-  const key = `${deviceId}:${kind}`;
-  if (warmedProfileSwitches.has(key)) return;
-  warmedProfileSwitches.add(key);
-
-  for (const retryDelayMs of profileWarmupRetryDelaysMs) {
-    setTimeout(() => {
-      const observedKind = resolveProfileKind(currentObservation, settings);
-      if (
-        shuttingDown ||
-        ws.readyState !== WebSocketLib.WebSocket.OPEN ||
-        activeKinds.get(deviceId) !== kind ||
-        observedKind !== kind
-      ) {
-        return;
-      }
-      switchToProfile(deviceId, profile);
-    }, retryDelayMs);
-  }
 }
 
 function switchToProfile(deviceId: string, profile?: string) {

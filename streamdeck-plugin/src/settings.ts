@@ -6,7 +6,6 @@ import {
 } from './types';
 
 export const DEFAULT_SETTINGS: ContextDeckSettings = {
-  profileRepairVersion: 0,
   enabled: true,
   debounceMs: 300,
   returnDelayMs: 450,
@@ -32,12 +31,6 @@ const DEVICE_SLUGS: Readonly<Record<number, string>> = {
 export function normalizeSettings(value: unknown): ContextDeckSettings {
   const input = isRecord(value) ? value : {};
   return {
-    profileRepairVersion: numberValue(
-      input.profileRepairVersion,
-      0,
-      1,
-      DEFAULT_SETTINGS.profileRepairVersion
-    ),
     enabled: booleanValue(input.enabled, DEFAULT_SETTINGS.enabled),
     debounceMs: numberValue(input.debounceMs, 100, 2000, DEFAULT_SETTINGS.debounceMs),
     returnDelayMs: numberValue(input.returnDelayMs, 100, 3000, DEFAULT_SETTINGS.returnDelayMs),

@@ -2,6 +2,15 @@
 
 All notable changes to ContextDeck are documented in this file.
 
+## [0.1.12] - 2026-07-28
+
+### Fixed
+
+- Removed the startup profile-repair cycle and profile-switch retries that
+  could trigger repeated installation prompts.
+- Context profiles now rely exclusively on Stream Deck's single bundled-profile
+  prompt during plugin installation.
+
 ## [0.1.11] - 2026-07-26
 
 ### Changed

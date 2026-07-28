@@ -18,7 +18,6 @@ export interface SelectionObservation {
 }
 
 export interface ContextDeckSettings {
-  profileRepairVersion: number;
   enabled: boolean;
   debounceMs: number;
   returnDelayMs: number;
